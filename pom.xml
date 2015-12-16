@@ -16,6 +16,12 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.3.6.v20151106</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+				</configuration>
 			</plugin>
         </plugins>
     </build>
@@ -25,6 +31,16 @@
 			<groupId>ru.killer666.aaa</groupId>
 			<artifactId>core</artifactId>
 			<version>5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.2.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
