@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 public class RoleResolverServiceImpl implements RoleResolverService {
+    @Override
     public Enum<?> resolve(int ordinal) {
         EnumSet<RoleEnum> set = EnumSet.allOf(RoleEnum.class);
 

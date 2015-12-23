@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import ru.killer666.aaa.service.GsonService;
 import ru.killer666.aaa.service.HibernateSessionServiceImpl;
 import ru.killer666.aaa.service.RoleResolverServiceImpl;
 import ru.killer666.trpo.aaa.services.HibernateSessionService;
@@ -33,6 +34,11 @@ public class BeanConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    GsonService gsonService() {
+        return new GsonService();
+    }
+
+    @Bean
     RoleResolverService roleResolverService() {
         return new RoleResolverServiceImpl();
     }
@@ -40,6 +46,9 @@ public class BeanConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public HibernateSessionService hibernateSessionService() {
         HibernateSessionServiceImpl hibernateSessionService = new HibernateSessionServiceImpl();
+
+        // TODO: Configuration
+
         return hibernateSessionService;
     }
 }
