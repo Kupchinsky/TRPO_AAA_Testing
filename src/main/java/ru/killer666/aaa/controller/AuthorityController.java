@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.killer666.aaa.RoleEnum;
 import ru.killer666.aaa.service.GsonService;
 import ru.killer666.trpo.aaa.domains.ResourceWithRole;
 import ru.killer666.trpo.aaa.domains.User;
-
-import java.util.Arrays;
 
 @Controller
 @RequestMapping(value = "/ajax/authority")
@@ -48,7 +45,7 @@ public class AuthorityController {
 
             toSerialize = criteria.list();
         } else {
-            toSerialize = Arrays.asList(RoleEnum.values());
+            toSerialize = session.createCriteria(ResourceWithRole.class).list();
         }
 
         return this.gsonService.getObject().toJson(toSerialize);
