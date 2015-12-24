@@ -36,10 +36,17 @@
 	</build>
 
 	<dependencies>
+		<!-- RetentionPolicy.SOURCE -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>ru.killer666.aaa</groupId>
 			<artifactId>core</artifactId>
-			<version>6.1</version>
+			<version>8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
