@@ -20,14 +20,14 @@ public class UserController {
     @Autowired
     SessionFactory sessionFactory;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public List getAll() throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
         return session.createCriteria(User.class).list();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public User getSingle(@PathVariable String id) throws Exception {
         Session session = this.sessionFactory.getCurrentSession();

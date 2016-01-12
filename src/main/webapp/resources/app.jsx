@@ -14,13 +14,13 @@ var Root = React.createClass({
 	handleUserSelected: function (userId) {
 		$.getJSON("/ajax/authority/user/" + userId)
 			.done(function (data) {
-				this.setState(update({$merge: {auth: data, accounting: [] }}));
+				this.setState(update(this.state, {$merge: {auth: data, accounting: [] }}));
 			}.bind(this));
 	},
 	handleAuthSelected: function (authorityId) {
 		$.getJSON("/ajax/activity/authority/" + authorityId)
 			.done(function (data) {
-				this.setState(update({$merge: {accounting: data, currentAuth: authorityId}}));
+				this.setState(update(this.state, {$merge: {accounting: data, currentAuth: authorityId}}));
 			}.bind(this));
 	},
     handleAddActivity: function (data) {
@@ -28,15 +28,14 @@ var Root = React.createClass({
             type: 'POST',
             url: '/ajax/activity/',
             data: JSON.stringify(data),
-            contentType: 'application/json',
-            }).done(function (data) {
-                console.log("Activity added");
-                this.setState(update(this.state, {$merge: {result: data}}));
+            contentType: 'application/json'
+        }).done(function (data) {
+            this.setState(update(this.state, {$merge: {result: data}}));
 
-                if (this.state.currentAuth) {
-                    this.handleAuthSelected(this.state.currentAuth);
-                }
-            }).bind(this);
+            if (this.state.currentAuth) {
+                this.handleAuthSelected(this.state.currentAuth);
+            }
+        }.bind(this));
     },
 	render: function () {
 		return (
@@ -190,7 +189,7 @@ Root.Authenticate = React.createClass({
                     <div><label target="de">-de (Date end)</label>
                         <input id="de" name="de" onChange={this.handleOnChange}/></div>
                     <div><label target="vol">-vol (Volume)</label>
-                        <input id="vol" name="vol" placeholder="100" onChange={this.handleOnChange}/></div>
+                        <input id="vol" name="vol" onChange={this.handleOnChange}/></div>
                     <div><input type="submit"/></div>
                 </form>
             </div>

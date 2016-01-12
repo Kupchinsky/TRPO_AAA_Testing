@@ -24,21 +24,21 @@ public class AuthorityController {
     @Autowired
     SessionFactory sessionFactory;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public List getAll() throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
         return session.createCriteria(ResourceWithRole.class).list();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResourceWithRole getSingle(@PathVariable String id) throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
         return (ResourceWithRole) session.get(ResourceWithRole.class, Integer.parseInt(id));
     }
 
-    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
     @ResponseBody
     public List getList(@PathVariable String userId) throws Exception {
         Session session = this.sessionFactory.getCurrentSession();
