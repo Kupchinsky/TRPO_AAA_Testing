@@ -1,33 +1,50 @@
+var update = React.addons.update;
+
 // Store global values
 var Root = React.createClass({
 	getInitialState: function () {
-		return {users: [], auth: [], accounting: []};
+		return {users: [], auth: [], accounting: [], result: "", currentAuth: null};
 	},
 	componentDidMount: function () {
 		$.getJSON("/ajax/user/")
 			.done(function (data) {
-				this.setState({users: data, auth: [], accounting: []});
+				this.setState(update(this.state, {$merge: {users: data, auth: [], accounting: []}}));
 			}.bind(this));
 	},
 	handleUserSelected: function (userId) {
-		$.getJSON("/ajax/authority/", {userId: userId})
+		$.getJSON("/ajax/authority/user/" + userId)
 			.done(function (data) {
-				this.setState({auth: data, accounting: [] });
+				this.setState(update({$merge: {auth: data, accounting: [] }}));
 			}.bind(this));
 	},
 	handleAuthSelected: function (authorityId) {
-		$.getJSON("/ajax/activity/", {authorityId: authorityId})
+		$.getJSON("/ajax/activity/authority/" + authorityId)
 			.done(function (data) {
-				this.setState({accounting: data});
+				this.setState(update({$merge: {accounting: data, currentAuth: authorityId}}));
 			}.bind(this));
 	},
+    handleAddActivity: function (data) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/activity/',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            }).done(function (data) {
+                console.log("Activity added");
+                this.setState(update(this.state, {$merge: {result: data}}));
+
+                if (this.state.currentAuth) {
+                    this.handleAuthSelected(this.state.currentAuth);
+                }
+            }).bind(this);
+    },
 	render: function () {
 		return (
 			<div>
 				<Root.UserTable data={this.state.users} onUserSelected={this.handleUserSelected}/>
 				<Root.AuthorityTable data={this.state.auth} onAuthSelected={this.handleAuthSelected}/>
 				<Root.AccountingTable data={this.state.accounting}/>
-				<Root.Authenticate />
+				<Root.Authenticate data={this.state.result} onActivityAdded={this.handleAddActivity} />
 			</div>
 		);
 	}
@@ -139,9 +156,46 @@ Root.AccountingTable = React.createClass({
 });
 
 Root.Authenticate = React.createClass({
-	render: function () {
-		return <span />;
-	}
+    getInitialState: function () {
+        return {login: null, pass: null, res: null, role: null, ds: null, de: null, vol: null};
+    },
+    handleOnChange: function (e) {
+        this.state[e.target.name] = e.target.value;
+    },
+    handleSubmit: function (e) {
+        e.preventDefault();
+        this.props.onActivityAdded(this.state);
+    },
+    render: function () {
+        return (
+            <div>
+                <span id="result">{this.props.data}</span>
+                <form onSubmit={this.handleSubmit}>
+                    <div><label target="login">-login</label>
+                        <input id="login" name="login" onChange={this.handleOnChange}/></div>
+                    <div><label target="pass">-pass</label>
+                        <input id="pass" name="pass" onChange={this.handleOnChange}/></div>
+                    <div><label target="role">-role</label>
+                        <select id="role" name="role" onChange={this.handleOnChange}>
+                            <option value="">Select role</option>
+                            <option value="READ">READ</option>
+                            <option value="WRITE">WRITE</option>
+                            <option value="EXECUTE">EXECUTE</option>
+                        </select>
+                    </div>
+                    <div><label target="res">-res</label>
+                        <input id="res" name="res" onChange={this.handleOnChange}/></div>
+                    <div><label target="ds">-ds (Date start)</label>
+                        <input id="ds" name="ds" onChange={this.handleOnChange}/></div>
+                    <div><label target="de">-de (Date end)</label>
+                        <input id="de" name="de" onChange={this.handleOnChange}/></div>
+                    <div><label target="vol">-vol (Volume)</label>
+                        <input id="vol" name="vol" placeholder="100" onChange={this.handleOnChange}/></div>
+                    <div><input type="submit"/></div>
+                </form>
+            </div>
+        );
+    }
 });
 
 ReactDOM.render(

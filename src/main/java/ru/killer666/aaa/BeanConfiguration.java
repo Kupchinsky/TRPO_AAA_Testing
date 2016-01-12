@@ -9,7 +9,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.killer666.aaa.service.GsonService;
 import ru.killer666.aaa.service.RoleResolverServiceImpl;
 import ru.killer666.trpo.aaa.services.RoleResolverService;
 
@@ -20,11 +19,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @Import(ru.killer666.trpo.aaa.BeanConfiguration.class)
 public class BeanConfiguration {
-    @Bean
-    GsonService gsonService() {
-        return new GsonService();
-    }
-
     @Bean
     RoleResolverService roleResolverService() {
         return new RoleResolverServiceImpl();
